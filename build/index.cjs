@@ -96,5 +96,3 @@ function _hemlstyles() {
   return _hemlstyles.apply(this, arguments);
 }
 var _default = exports["default"] = hemlstyles;
-
-export default hemlstyles;
