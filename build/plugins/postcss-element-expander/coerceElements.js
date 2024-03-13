@@ -1,4 +1,4 @@
-import { isPlainObject, escapeRegExp, isString, compact } from 'lodash';
+import lodash from 'lodash';
 
 /**
    * remap the elements var to looks like this
@@ -36,11 +36,11 @@ export default function (originalElements) {
       if (pseudo) pseudos[pseudo] = selector;
 
       /** remap the rules to always be { prop: RegExp, transform: Function } */
-      rules[selector] = compact(decls.map(decl => {
-        if (isPlainObject(decl) && Object.keys(decl).length === 0) return;
-        const prop = isPlainObject(decl) ? Object.keys(decl)[0] : decl;
-        const transform = isPlainObject(decl) ? Object.values(decl)[0] : () => {};
-        if (isString(prop) && prop.startsWith('@')) return;
+      rules[selector] = lodash.compact(decls.map(decl => {
+        if (lodash.isPlainObject(decl) && Object.keys(decl).length === 0) return;
+        const prop = lodash.isPlainObject(decl) ? Object.keys(decl)[0] : decl;
+        const transform = lodash.isPlainObject(decl) ? Object.values(decl)[0] : () => {};
+        if (lodash.isString(prop) && prop.startsWith('@')) return;
         return {
           prop: toRegExp(prop),
           transform
@@ -65,13 +65,13 @@ export default function (originalElements) {
  */
 function findAtDecl(decls, prop) {
   const foundDecls = decls.filter(decl => {
-    return isPlainObject(decl) && Object.keys(decl).length > 0 && Object.keys(decl)[0] === `@${prop}` || decl === `@${prop}`;
+    return lodash.isPlainObject(decl) && Object.keys(decl).length > 0 && Object.keys(decl)[0] === `@${prop}` || decl === `@${prop}`;
   });
   if (foundDecls.length === 0) {
     return;
   }
   const decl = foundDecls[0];
-  return isPlainObject(decl) ? Object.values(decl)[0] : true;
+  return lodash.isPlainObject(decl) ? Object.values(decl)[0] : true;
 }
 
 /**
@@ -80,13 +80,13 @@ function findAtDecl(decls, prop) {
  * @return {RegExp}              the regular expression
  */
 function toRegExp(string) {
-  if (isString(string) && string.startsWith('/') && string.lastIndexOf('/') !== 0) {
+  if (lodash.isString(string) && string.startsWith('/') && string.lastIndexOf('/') !== 0) {
     const pattern = string.substr(1, string.lastIndexOf('/') - 1);
     const opts = string.substr(string.lastIndexOf('/') + 1).toLowerCase();
     return new RegExp(pattern, opts.includes('i') ? opts : `${opts}i`);
   }
-  if (isString(string)) {
-    return new RegExp(`^${escapeRegExp(string)}$`, 'i');
+  if (lodash.isString(string)) {
+    return new RegExp(`^${lodash.escapeRegExp(string)}$`, 'i');
   }
   return string;
 }
