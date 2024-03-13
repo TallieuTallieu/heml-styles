@@ -17,7 +17,7 @@
   "files": [
     "build/"
   ],
-  "main": "build/index.js",
+  "main": "build/index.cjs",
   "publishConfig": {
     "access": "public"
   },
